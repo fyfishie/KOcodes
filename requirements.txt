@@ -1,0 +1,6 @@
+scipy
+bokeh
+torch
+torchvision
+pandas
+opt_sinsum
