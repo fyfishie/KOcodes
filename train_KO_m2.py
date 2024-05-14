@@ -70,7 +70,8 @@ parser.add_argument('--gpu', type=int, default=7, help='gpus used for training -
 
 args = parser.parse_args()
 
-device = torch.device("cuda:{0}".format(args.gpu))
+# device = torch.device("cuda:{0}".format(args.gpu))
+device = "cpu"
 kwargs = {'num_workers': 4, 'pin_memory': False}
 
 results_save_path = './Results/RM({0},2)/fullNN_Enc+fullNN_Dec/Enc_snr_{1}_Dec_snr{2}/Batch_{3}'\
@@ -762,6 +763,7 @@ def pairwise_distances(codebook):
         distance = (row1-row2).pow(2).sum()
         dists.append(np.sqrt(distance.item()))
     return dists, np.min(dists)
+
 try:
     for k in range(args.full_iterations):
         start_time = time.time()
@@ -781,6 +783,8 @@ try:
                 loss = criterion(decoded_bits,  0.5*msg_bits+0.5)/num_small_batches
                 
                 loss.backward()
+                
+            #COMMENT: update parameter after many times of backward
             dec_optimizer.step()
             
                 
